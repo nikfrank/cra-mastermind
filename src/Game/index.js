@@ -4,6 +4,7 @@ import './index.css';
 import GuessRow from '../GuessRow/';
 
 const difficulty = 6;
+const codeLength = 4;
 
 // unit test this
 // and move dotArity into game options
@@ -30,14 +31,17 @@ const score = (dotArity => (code, guess) => {
   ];
 })(difficulty);
 
+const randomCode = ()=>
+  Array(codeLength).fill(0).map(() => Math.floor(Math.random()*difficulty));
+
 class Game extends Component {
   constructor(...p){
     super(...p);
     this.state = {
       results: [],
-      code: [1, 2, 3, 4],
+      code: randomCode(codeLength),
       guesses: [],
-      currentGuess: [0,0,0,0],
+      currentGuess: Array(codeLength).fill(0),
     };
   }
 
@@ -46,6 +50,12 @@ class Game extends Component {
     //  new code
     //  clearGuesses
     //  if was in middle of game, push result to results
+    
+    this.setState({
+      code: randomCode(codeLength),
+      guesses: [],
+      currentGuess: Array(codeLength).fill(0),
+    });
   }
 
   onGuess = (guess)=>{
@@ -53,12 +63,18 @@ class Game extends Component {
     //  push guess to guesses, with score
     //  clear currentGuess
 
+    const nuScore = score(this.state.code, this.state.currentGuess);
+    const wonGame = nuScore[0] === codeLength;
+    
     this.setState({
       guesses: this.state.guesses.concat({
         code: this.state.currentGuess,
-        score: score(this.state.code, this.state.currentGuess),
+        score: nuScore,
       }),
-      currentGuess: [0,0,0,0],
+      currentGuess: wonGame ? null : Array(codeLength).fill(0),
+      results: wonGame ?
+               this.state.results.concat(this.state.guesses.length+1) :
+               this.state.results,
     });
   }
 
@@ -70,7 +86,6 @@ class Game extends Component {
     return (
       <div>
         <div>
-          game
           <button onClick={this.startGame}>New Game</button>
         </div>
         <div className="game-board">
@@ -79,13 +94,21 @@ class Game extends Component {
               <GuessRow key={i} code={guess.code} score={guess.score}/>
             ) )
           }
-        <GuessRow code={this.state.currentGuess}
-                  score={null}
-                  dotArity={difficulty}
-                  onChangeGuess={this.setCurrentGuess}
-                  onGuess={this.onGuess}/>
+        {
+          this.state.currentGuess ?
+          <GuessRow code={this.state.currentGuess}
+                    score={null}
+                    dotArity={difficulty}
+                    onChangeGuess={this.setCurrentGuess}
+                    onGuess={this.onGuess}/> : null
+        }
         </div>
-        <div>results</div>
+        <div>
+          results
+          {
+            this.state.results.map( (r, i) => (<div key={i}>{r} guesses</div>) )
+          }
+        </div>
       </div>
     );
   }
