@@ -3,7 +3,7 @@ import './index.css';
 
 import GuessRow from '../GuessRow/';
 
-const difficulty = 16;
+const difficulty = 6;
 
 // unit test this
 // and move dotArity into game options
@@ -73,8 +73,7 @@ class Game extends Component {
           game
           <button onClick={this.startGame}>New Game</button>
         </div>
-        <div>
-          guesses
+        <div className="game-board">
           {
             this.state.guesses.map( (guess, i) => (
               <GuessRow key={i} code={guess.code} score={guess.score}/>

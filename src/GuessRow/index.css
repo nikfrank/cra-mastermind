@@ -6,3 +6,59 @@
 .guess-row-dot {
   color: red;
 }
+
+.guess-row-dot div {
+  border-radius: 50%;
+  height: 0;
+  width: 0;
+}
+
+.dot-0 div {
+  border: 15px solid red;
+}
+
+.dot-1 div {
+  border: 15px solid orange;
+}
+
+.dot-2 div {
+  border: 15px solid yellow;
+}
+
+.dot-3 div {
+  border: 15px solid green;
+}
+
+.dot-4 div {
+  border: 15px solid blue;
+}
+
+.dot-5 div {
+  border: 15px solid purple;
+}
+
+.score-container {
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.score-dot {
+  display: inline-block;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+}
+
+.score-dot-black {
+  border: 5px solid black;
+}
+
+.score-dot-pink {
+  border: 5px solid pink;
+}
+
+.score-dot-none {
+  border: 5px solid white;
+}
